@@ -13,10 +13,15 @@ WORKDIR /home/${USER}
 RUN set -x && \
     chmod 755 . && \
     mkdir -p .ssh && \
-    echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> .ssh/config && \
+    echo "Host github.com\n\tStrictHostKeyChecking no\n" >> .ssh/config && \
     chmod 600 .ssh/config && \
     chown -R ${USER}:${GROUP} .
 
-RUN pip install python-gilt && \
+RUN set -x && \
+    apt-get update && \
+    apt-get install -y git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip install python-gilt && \
     rm -rf /root/.cache/pip
 
